@@ -66,7 +66,7 @@ def analyze_body_shape(image_bytes: bytes, mime_type: str) -> dict:
     """
     Uses Gemini 1.5 Pro to analyze body photos (tummy/face shape) for health state estimation.
     """
-    if not vertex_initialized or PROJECT_ID == "health-and-food-app":
+    if not vertex_initialized:
         logger.info("Mocking Gemini Body Analysis API call")
         return {
             "health_state_estimate": "Good",
@@ -95,7 +95,7 @@ def verify_grocery_receipt(image_bytes: bytes, mime_type: str, healthy_roadmap: 
     """
     Uses Gemini to verify grocery photos against the "Healthy Roadmap" list.
     """
-    if not vertex_initialized or PROJECT_ID == "health-and-food-app":
+    if not vertex_initialized:
         logger.info("Mocking Gemini Grocery Verification API call")
         return {
             "verification_status": "Passed",

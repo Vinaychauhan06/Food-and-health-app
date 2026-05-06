@@ -22,7 +22,7 @@ def generate_future_self(body_analysis_data: dict) -> dict:
     Generates a 'Future Self' motivational image using Google Imagen API.
     Based on the body analysis data.
     """
-    if not imagen_initialized or PROJECT_ID == "health-and-food-app":
+    if not imagen_initialized:
         logger.info("Mocking Imagen API call for Lalach Dashboard")
         return {
             "image_url": "https://dummyimage.com/600x400/1a2035/00f0ff.png&text=Future+Self+Simulation",
