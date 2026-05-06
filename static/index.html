@@ -49,6 +49,18 @@
                     <h2>Healthy Hack</h2>
                     <p>Get a location-based meal hack</p>
                 </button>
+
+                <button class="card interactive-btn" id="btn-body" aria-label="Analyze Body Shape">
+                    <div class="card-icon">🧍</div>
+                    <h2>Body Analysis</h2>
+                    <p>Estimate health from body photo</p>
+                </button>
+
+                <button class="card interactive-btn" id="btn-grocery" aria-label="Verify Grocery Receipt">
+                    <div class="card-icon">🛒</div>
+                    <h2>Grocery Match</h2>
+                    <p>Verify receipt against healthy roadmap</p>
+                </button>
             </section>
 
             <section class="results-panel" id="results-panel" aria-live="polite">
@@ -59,12 +71,19 @@
                     <div id="loading-indicator" class="hidden">
                         <div class="spinner"></div> Processing...
                     </div>
+                    
+                    <div id="future-self-container" style="display: none; margin-top: 1rem; text-align: center;">
+                        <img id="future-self-image" src="" alt="Future Self Simulation" style="max-width: 100%; border-radius: 10px; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);">
+                        <p id="future-self-motivation" style="margin-top: 0.5rem; font-family: var(--font-heading); color: var(--primary);"></p>
+                    </div>
                 </div>
             </section>
         </main>
         
-        <!-- Hidden input for water photo -->
+        <!-- Hidden inputs for file uploads -->
         <input type="file" id="water-photo-input" accept="image/*" style="display: none;">
+        <input type="file" id="body-photo-input" accept="image/*" style="display: none;">
+        <input type="file" id="grocery-photo-input" accept="image/*" style="display: none;">
     </div>
 
     <!-- Scripts -->

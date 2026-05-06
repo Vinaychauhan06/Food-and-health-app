@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes import health_hacks, water_intake
+from routes import health_hacks, water_intake, body_analysis, motivation
 import uvicorn
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
@@ -17,6 +17,8 @@ app = FastAPI(
 # Include Routers
 app.include_router(health_hacks.router, prefix="/api/v1/hacks", tags=["Health Hacks"])
 app.include_router(water_intake.router, prefix="/api/v1/water", tags=["Water Intake"])
+app.include_router(body_analysis.router, prefix="/api/v1/vision", tags=["Vision Engine"])
+app.include_router(motivation.router, prefix="/api/v1/motivation", tags=["Motivation (Lalach)"])
 
 # Mount Static Files for Frontend
 app.mount("/static", StaticFiles(directory="static"), name="static")

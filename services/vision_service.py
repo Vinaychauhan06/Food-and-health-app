@@ -61,3 +61,59 @@ def estimate_water_volume(image_bytes: bytes, mime_type: str) -> dict:
             "confidence": "Error",
             "message": "Failed to analyze image."
         }
+
+def analyze_body_shape(image_bytes: bytes, mime_type: str) -> dict:
+    """
+    Uses Gemini 1.5 Pro to analyze body photos (tummy/face shape) for health state estimation.
+    """
+    if not vertex_initialized or PROJECT_ID == "health-and-food-app":
+        logger.info("Mocking Gemini Body Analysis API call")
+        return {
+            "health_state_estimate": "Good",
+            "face_shape": "oval",
+            "tummy_profile": "flat",
+            "recommendation": "Maintain current diet and exercise routine."
+        }
+
+    try:
+        image_part = Part.from_data(data=image_bytes, mime_type=mime_type)
+        prompt = "Analyze this body/face photo. Estimate the general health state based on visible markers like face shape (e.g., round, oval) and tummy profile. Provide a JSON response with keys: 'health_state_estimate', 'face_shape', 'tummy_profile', and 'recommendation'."
+        
+        response = model.generate_content([image_part, prompt])
+        # In reality, we would parse the JSON carefully here.
+        return {
+            "health_state_estimate": "Analyzed",
+            "face_shape": "Detected",
+            "tummy_profile": "Detected",
+            "recommendation": response.text.strip()
+        }
+    except Exception as e:
+        logger.error(f"Error in body analysis: {e}")
+        return {"error": "Failed to analyze body shape"}
+
+def verify_grocery_receipt(image_bytes: bytes, mime_type: str, healthy_roadmap: list) -> dict:
+    """
+    Uses Gemini to verify grocery photos against the "Healthy Roadmap" list.
+    """
+    if not vertex_initialized or PROJECT_ID == "health-and-food-app":
+        logger.info("Mocking Gemini Grocery Verification API call")
+        return {
+            "verification_status": "Passed",
+            "matched_items": ["Oats", "Apples", "Spinach"],
+            "unhealthy_items_flagged": ["Soda"],
+            "message": "Great job! Most items match your healthy roadmap. Goal Unlocked!"
+        }
+
+    try:
+        image_part = Part.from_data(data=image_bytes, mime_type=mime_type)
+        roadmap_str = ", ".join(healthy_roadmap)
+        prompt = f"Analyze this grocery receipt or basket. Cross-reference the items found with this healthy roadmap: [{roadmap_str}]. Tell me which items match, and flag any obviously unhealthy items."
+        
+        response = model.generate_content([image_part, prompt])
+        return {
+            "verification_status": "Analyzed",
+            "message": response.text.strip()
+        }
+    except Exception as e:
+        logger.error(f"Error in grocery verification: {e}")
+        return {"error": "Failed to verify groceries"}

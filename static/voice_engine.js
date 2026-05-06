@@ -38,9 +38,15 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         if (transcript.includes('hack') || transcript.includes('meal')) {
             window.speak("Checking location for healthy hack.");
             if (window.triggerHackAction) window.triggerHackAction();
-        } else if (transcript.includes('water') || transcript.includes('photo')) {
+        } else if (transcript.includes('water')) {
             window.speak("Opening file selector for water check.");
             if (window.triggerWaterAction) window.triggerWaterAction();
+        } else if (transcript.includes('body') || transcript.includes('analyze')) {
+            window.speak("Opening file selector for body analysis.");
+            if (window.triggerBodyAction) window.triggerBodyAction();
+        } else if (transcript.includes('grocery') || transcript.includes('receipt')) {
+            window.speak("Opening file selector for grocery match.");
+            if (window.triggerGroceryAction) window.triggerGroceryAction();
         }
     };
 
