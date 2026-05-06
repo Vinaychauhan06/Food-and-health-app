@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Health Ecosystem</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+    
+    <!-- TensorFlow.js and Face Landmarks Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
+</head>
+<body>
+    <div id="nose-cursor"></div>
+
+    <div class="app-container">
+        <header class="game-header">
+            <h1>HEALTH HUB <span class="badge">PRO</span></h1>
+            <div class="controls">
+                <button id="voice-toggle" class="control-btn" aria-label="Toggle Voice Control">
+                    <span class="icon">🎙️</span> Voice: <span id="voice-status">OFF</span>
+                </button>
+                <button id="nose-toggle" class="control-btn" aria-label="Toggle Nose Tracking">
+                    <span class="icon">👃</span> Tracker: <span id="nose-status">OFF</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Hidden video element for tracking -->
+            <video id="webcam" autoplay playsinline style="display: none;"></video>
+
+            <section class="action-cards">
+                <button class="card interactive-btn" id="btn-water" aria-label="Check Water Intake">
+                    <div class="card-icon">💧</div>
+                    <h2>Check Water</h2>
+                    <p>Upload a photo of your glass</p>
+                </button>
+
+                <button class="card interactive-btn" id="btn-hack" aria-label="Get Healthy Hack">
+                    <div class="card-icon">🍲</div>
+                    <h2>Healthy Hack</h2>
+                    <p>Get a location-based meal hack</p>
+                </button>
+            </section>
+
+            <section class="results-panel" id="results-panel" aria-live="polite">
+                <div class="glass-panel">
+                    <h3>Transmission Log</h3>
+                    <p id="system-message">Awaiting command...</p>
+                    
+                    <div id="loading-indicator" class="hidden">
+                        <div class="spinner"></div> Processing...
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Hidden input for water photo -->
+        <input type="file" id="water-photo-input" accept="image/*" style="display: none;">
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/voice_engine.js"></script>
+    <script src="/static/nose_tracker.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
