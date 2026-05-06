@@ -23,10 +23,13 @@ app.include_router(motivation.router, prefix="/api/v1/motivation", tags=["Motiva
 # Mount Static Files for Frontend
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/", include_in_schema=False)
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def root():
-    """Redirects root to the frontend app."""
-    return RedirectResponse(url="/static/index.html")
+    """Serves the frontend app directly on root."""
+    with open("static/index.html", "r") as f:
+        return HTMLResponse(content=f.read(), status_code=200)
 
 @app.get("/healthz", tags=["Health"])
 def health_check():
