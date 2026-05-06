@@ -3,92 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Health Ecosystem</title>
+    <title>Health Hub Pro</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     
     <!-- CSS -->
     <link rel="stylesheet" href="/static/style.css">
-    
-    <!-- TensorFlow.js and Face Landmarks Detection -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
 </head>
 <body>
-    <div id="nose-cursor"></div>
-
     <div class="app-container">
-        <header class="game-header">
-            <h1>HEALTH HUB <span class="badge">PRO</span></h1>
-            <div class="controls">
-                <button id="voice-toggle" class="control-btn" aria-label="Toggle Voice Control">
-                    <span class="icon">🎙️</span> Voice: <span id="voice-status">OFF</span>
-                </button>
-                <button id="nose-toggle" class="control-btn" aria-label="Toggle Nose Tracking">
-                    <span class="icon">👃</span> Tracker: <span id="nose-status">OFF</span>
-                </button>
-            </div>
-        </header>
-
-        <main class="dashboard">
-            <!-- Hidden video element for tracking -->
-            <video id="webcam" autoplay playsinline style="display: none;"></video>
-
-            <section class="action-cards">
-                <button class="card interactive-btn" id="btn-water" aria-label="Check Water Intake">
-                    <div class="card-icon">💧</div>
-                    <h2>Check Water</h2>
-                    <p>Upload a photo of your glass</p>
-                </button>
-
-                <button class="card interactive-btn" id="btn-hack" aria-label="Get Healthy Hack">
-                    <div class="card-icon">🍲</div>
-                    <h2>Healthy Hack</h2>
-                    <p>Get a location-based meal hack</p>
-                </button>
-
-                <button class="card interactive-btn" id="btn-body" aria-label="Analyze Body Shape">
-                    <div class="card-icon">🧍</div>
-                    <h2>Body Analysis</h2>
-                    <p>Estimate health from body photo</p>
-                </button>
-
-                <button class="card interactive-btn" id="btn-grocery" aria-label="Verify Grocery Receipt">
-                    <div class="card-icon">🛒</div>
-                    <h2>Grocery Match</h2>
-                    <p>Verify receipt against healthy roadmap</p>
-                </button>
-            </section>
-
-            <section class="results-panel" id="results-panel" aria-live="polite">
-                <div class="glass-panel">
-                    <h3>Transmission Log</h3>
-                    <p id="system-message">Awaiting command...</p>
-                    
-                    <div id="loading-indicator" class="hidden">
-                        <div class="spinner"></div> Processing...
-                    </div>
-                    
-                    <div id="future-self-container" style="display: none; margin-top: 1rem; text-align: center;">
-                        <img id="future-self-image" src="" alt="Future Self Simulation" style="max-width: 100%; border-radius: 10px; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);">
-                        <p id="future-self-motivation" style="margin-top: 0.5rem; font-family: var(--font-heading); color: var(--primary);"></p>
-                    </div>
-                </div>
-            </section>
-        </main>
         
-        <!-- Hidden inputs for file uploads -->
-        <input type="file" id="water-photo-input" accept="image/*" style="display: none;">
-        <input type="file" id="body-photo-input" accept="image/*" style="display: none;">
-        <input type="file" id="grocery-photo-input" accept="image/*" style="display: none;">
+        <!-- ================= VIEW: LOGIN ================= -->
+        <div id="view-login" class="view-section active">
+            <div class="auth-box glass-panel">
+                <h1 class="logo-title">HEALTH HUB <span class="badge">PRO</span></h1>
+                <p>Welcome back to your ultimate fitness journey.</p>
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email address" value="test@example.com">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Password" value="password123">
+                </div>
+                <button id="btn-login" class="primary-btn">Log In / Sign Up</button>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: ONBOARDING ================= -->
+        <div id="view-onboarding" class="view-section hidden">
+            <div class="auth-box glass-panel" style="max-width: 600px;">
+                <h2 style="margin-bottom: 1rem; color: var(--primary);">Let's Build Your Roadmap</h2>
+                
+                <div class="question-block">
+                    <label>1. What is your primary health goal?</label>
+                    <select id="ob-goal">
+                        <option value="weight_loss">Lose Weight</option>
+                        <option value="muscle_gain">Gain Muscle</option>
+                        <option value="maintenance">Maintain Fitness</option>
+                    </select>
+                </div>
+
+                <div class="question-block">
+                    <label>2. What is your current diet?</label>
+                    <select id="ob-diet">
+                        <option value="balanced">Balanced / Anything</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="keto">Keto</option>
+                    </select>
+                </div>
+
+                <div class="question-block">
+                    <label>3. Age Group</label>
+                    <select id="ob-age">
+                        <option value="18_25">18 - 25</option>
+                        <option value="26_40">26 - 40</option>
+                        <option value="41_plus">41+</option>
+                    </select>
+                </div>
+
+                <button id="btn-finish-onboarding" class="primary-btn">Generate Roadmap</button>
+            </div>
+        </div>
+
+        <!-- ================= VIEW: DASHBOARD ================= -->
+        <div id="view-dashboard" class="view-section hidden">
+            <header class="game-header">
+                <h1 class="logo-title">HEALTH HUB <span class="badge">PRO</span></h1>
+                <div class="controls">
+                    <button id="voice-toggle" class="control-btn" aria-label="Toggle Voice Control">
+                        <span class="icon">🎙️</span> Voice: <span id="voice-status">OFF</span>
+                    </button>
+                    <button id="btn-logout" class="control-btn">Log Out</button>
+                </div>
+            </header>
+
+            <main class="dashboard">
+                <!-- Progress Roadmap visual -->
+                <section class="roadmap-section glass-panel">
+                    <h3>Your Journey: <span id="user-goal-display">Loading...</span></h3>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-bar"></div>
+                        <div class="milestone active">1<br><span>Start</span></div>
+                        <div class="milestone" id="ms-2">2<br><span>Habit</span></div>
+                        <div class="milestone" id="ms-3">3<br><span>Results</span></div>
+                        <div class="milestone" id="ms-4">4<br><span>Future Self</span></div>
+                    </div>
+                </section>
+
+                <section class="action-cards">
+                    <button class="card interactive-btn" id="btn-water" aria-label="Check Water Intake">
+                        <div class="card-icon">💧</div>
+                        <h2>Check Water</h2>
+                        <p>Upload a photo of your glass</p>
+                    </button>
+
+                    <button class="card interactive-btn" id="btn-hack" aria-label="Get Healthy Hack">
+                        <div class="card-icon">🍲</div>
+                        <h2>Healthy Hack</h2>
+                        <p>Get a location-based meal hack</p>
+                    </button>
+
+                    <button class="card interactive-btn" id="btn-body" aria-label="Analyze Body Shape">
+                        <div class="card-icon">🧍</div>
+                        <h2>Body Analysis</h2>
+                        <p>Estimate health from body photo</p>
+                    </button>
+
+                    <button class="card interactive-btn" id="btn-grocery" aria-label="Verify Grocery Receipt">
+                        <div class="card-icon">🛒</div>
+                        <h2>Grocery Match</h2>
+                        <p>Verify receipt against healthy roadmap</p>
+                    </button>
+                </section>
+
+                <section class="results-panel" id="results-panel" aria-live="polite">
+                    <div class="glass-panel">
+                        <h3>Transmission Log</h3>
+                        <p id="system-message">Awaiting command...</p>
+                        
+                        <div id="loading-indicator" class="hidden">
+                            <div class="spinner"></div> Processing...
+                        </div>
+                        
+                        <div id="future-self-container" style="display: none; margin-top: 1rem; text-align: center;">
+                            <img id="future-self-image" src="" alt="Future Self Simulation" style="max-width: 100%; border-radius: 10px; border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);">
+                            <p id="future-self-motivation" style="margin-top: 0.5rem; font-family: var(--font-heading); color: var(--primary);"></p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            
+            <!-- Hidden inputs for file uploads -->
+            <input type="file" id="water-photo-input" accept="image/*" style="display: none;">
+            <input type="file" id="body-photo-input" accept="image/*" style="display: none;">
+            <input type="file" id="grocery-photo-input" accept="image/*" style="display: none;">
+        </div>
+
     </div>
 
     <!-- Scripts -->
     <script src="/static/voice_engine.js"></script>
-    <script src="/static/nose_tracker.js"></script>
     <script src="/static/app.js"></script>
 </body>
 </html>
